@@ -73,7 +73,7 @@ Start the HTTP server by running `server.js` directly with Node.js:
 node server.js
 ```
 
-> **Important:** There is no `npm start` script defined in `package.json`. The server must be started with `node server.js` directly (Source: `package.json`, lines 6–8).
+> **Note:** While no explicit `start` script is defined in `package.json` (Source: `package.json`, lines 6–8), `npm start` works by default because npm automatically runs `node server.js` when a `server.js` file is present in the project root. You can also start the server directly with `node server.js`.
 
 ### Expected Console Output
 
@@ -322,7 +322,7 @@ CMD ["node", "server.js"]
 
 1. **`main` field discrepancy:** `package.json` declares `"main": "index.js"` (Source: `package.json`, line 5) but no `index.js` file exists in the project. The actual application entry point is `server.js`. This discrepancy does not affect server operation since the server is started directly with `node server.js`.
 
-2. **No `npm start` script:** The server must be started with `node server.js` directly. No `start` script is defined in `package.json` (Source: `package.json`, lines 6–8). To add one, include `"start": "node server.js"` in the `scripts` section.
+2. **No explicit `npm start` script:** No `start` script is explicitly defined in `package.json` (Source: `package.json`, lines 6–8). However, `npm start` works because npm defaults to running `node server.js` when a `server.js` file exists in the project root. Adding an explicit `"start": "node server.js"` entry to the `scripts` section is optional but can improve clarity for other developers.
 
 3. **Placeholder test script:** Running `npm test` executes `echo "Error: no test specified" && exit 1` — no actual test harness is configured (Source: `package.json`, line 7). A testing framework (e.g., Jest, Mocha) would need to be added for automated testing.
 
