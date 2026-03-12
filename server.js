@@ -1,6 +1,6 @@
 /**
  * @module server
- * @description A minimal Node.js HTTP server that listens on a configurable
+ * @description A minimal Node.js HTTP server that listens on a specified
  * hostname and port, responding to every incoming request with a plain-text
  * "Hello, World!" message.
  * @author hxu
@@ -8,9 +8,10 @@
  * @requires http
  */
 
-// Import the built-in Node.js HTTP module for creating the web server
+// Import the built-in Node.js HTTP module for creating the HTTP server
 const http = require('http');
 
+// Server configuration constants — hostname and port for the HTTP server
 /**
  * @constant {string} hostname
  * @description The hostname the server binds to. Set to localhost (loopback)
