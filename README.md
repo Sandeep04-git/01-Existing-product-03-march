@@ -14,6 +14,7 @@ A minimal Node.js HTTP server that responds with "Hello, World!" to every incomi
 - [Usage](#usage)
 - [API Documentation](#api-documentation)
 - [Code Walkthrough](#code-walkthrough)
+- [Diagrams](#diagrams)
 - [Deployment Guide](#deployment-guide)
 - [Project Structure](#project-structure)
 - [Known Issues & Notes](#known-issues--notes)
@@ -29,7 +30,7 @@ A minimal Node.js HTTP server that responds with "Hello, World!" to every incomi
 | **Node.js** | v15+ | Required for npm v7+ compatibility (inferred from `package-lock.json` lockfileVersion 3) |
 | **npm** | v7+ | Bundled with Node.js v15+ |
 
-This project has **zero external dependencies** — it uses only the Node.js built-in `http` module (Source: `server.js`, line 1). No additional packages are required.
+This project has **zero external dependencies** — it uses only the Node.js built-in `http` module (Source: `server.js`, line 12). No additional packages are required.
 
 ---
 
@@ -76,11 +77,11 @@ node server.js
 
 ### Expected Console Output
 
-```
+```text
 Server running at http://127.0.0.1:3000/
 ```
 
-(Source: `server.js`, line 13)
+(Source: `server.js`, line 52)
 
 Once this message appears, the server is ready to accept HTTP requests on `http://127.0.0.1:3000/`.
 
@@ -90,7 +91,7 @@ Once this message appears, the server is ready to accept HTTP requests on `http:
 
 ### Endpoint Overview
 
-The server responds identically to **all HTTP methods** and **all paths** — there is no routing logic. Every request receives the same static response (Source: `server.js`, lines 6–9).
+The server responds identically to **all HTTP methods** and **all paths** — there is no routing logic. Every request receives the same static response (Source: `server.js`, lines 37–44).
 
 | Method | Path | Status Code | Content-Type | Response Body |
 |--------|------|-------------|--------------|---------------|
@@ -108,9 +109,9 @@ The server responds identically to **all HTTP methods** and **all paths** — th
 
 | Field | Value | Source |
 |-------|-------|--------|
-| **Status Code** | `200 OK` | `server.js`, line 7 |
-| **Content-Type** | `text/plain` | `server.js`, line 8 |
-| **Body** | `Hello, World!\n` | `server.js`, line 9 |
+| **Status Code** | `200 OK` | `server.js`, line 39 |
+| **Content-Type** | `text/plain` | `server.js`, line 41 |
+| **Body** | `Hello, World!\n` | `server.js`, line 43 |
 
 ### Example Request and Response
 
@@ -122,7 +123,7 @@ curl -i http://127.0.0.1:3000/
 
 Expected output:
 
-```
+```text
 HTTP/1.1 200 OK
 Content-Type: text/plain
 Date: <current date>
@@ -137,17 +138,17 @@ Hello, World!
 
 ## Code Walkthrough
 
-The entire application logic resides in `server.js` (14 lines). Below is an annotated walkthrough of each logical block.
+The entire application logic resides in `server.js` (14 lines of application code, 53 lines total including JSDoc annotations and inline comments). Below is an annotated walkthrough of each logical block.
 
-### 1. Module Import (line 1)
+### 1. Module Import (line 12)
 
 ```javascript
 const http = require('http');
 ```
 
-Imports the Node.js built-in `http` module using CommonJS `require()` syntax. This module provides the functionality to create an HTTP server without any external dependencies (Source: `server.js`, line 1).
+Imports the Node.js built-in `http` module using CommonJS `require()` syntax. This module provides the functionality to create an HTTP server without any external dependencies (Source: `server.js`, line 12).
 
-### 2. Server Configuration (lines 3–4)
+### 2. Server Configuration (lines 21–28)
 
 ```javascript
 const hostname = '127.0.0.1';
@@ -155,10 +156,10 @@ const port = 3000;
 ```
 
 Defines two constants that configure the server's network binding:
-- **`hostname`** (`'127.0.0.1'`): The server binds to the localhost loopback address, meaning it only accepts connections from the local machine (Source: `server.js`, line 3).
-- **`port`** (`3000`): The TCP port number on which the server listens for incoming HTTP requests (Source: `server.js`, line 4).
+- **`hostname`** (`'127.0.0.1'`): The server binds to the localhost loopback address, meaning it only accepts connections from the local machine (Source: `server.js`, line 21).
+- **`port`** (`3000`): The TCP port number on which the server listens for incoming HTTP requests (Source: `server.js`, line 28).
 
-### 3. Request Handler (lines 6–10)
+### 3. Request Handler (lines 37–44)
 
 ```javascript
 const server = http.createServer((req, res) => {
@@ -169,13 +170,13 @@ const server = http.createServer((req, res) => {
 ```
 
 Creates an HTTP server with a request handler callback that processes every incoming request:
-- **`res.statusCode = 200`**: Sets the HTTP response status code to `200 OK` (Source: `server.js`, line 7).
-- **`res.setHeader('Content-Type', 'text/plain')`**: Sets the response `Content-Type` header to `text/plain`, indicating a plain text response body (Source: `server.js`, line 8).
-- **`res.end('Hello, World!\n')`**: Sends the response body `Hello, World!\n` and signals that the response is complete (Source: `server.js`, line 9).
+- **`res.statusCode = 200`**: Sets the HTTP response status code to `200 OK` (Source: `server.js`, line 39).
+- **`res.setHeader('Content-Type', 'text/plain')`**: Sets the response `Content-Type` header to `text/plain`, indicating a plain text response body (Source: `server.js`, line 41).
+- **`res.end('Hello, World!\n')`**: Sends the response body `Hello, World!\n` and signals that the response is complete (Source: `server.js`, line 43).
 
 The `req` parameter (`http.IncomingMessage`) is not inspected — all requests receive the identical response regardless of method, path, or headers.
 
-### 4. Server Startup (lines 12–14)
+### 4. Server Startup (lines 50–53)
 
 ```javascript
 server.listen(port, hostname, () => {
@@ -183,7 +184,7 @@ server.listen(port, hostname, () => {
 });
 ```
 
-Binds the server to the configured `hostname` and `port`, then executes the callback once the server is ready to accept connections. The callback logs the server URL to the console, confirming successful startup (Source: `server.js`, lines 12–14).
+Binds the server to the configured `hostname` and `port`, then executes the callback once the server is ready to accept connections. The callback logs the server URL to the console, confirming successful startup (Source: `server.js`, lines 50–53).
 
 ---
 
@@ -280,7 +281,7 @@ sudo systemctl enable hello-world
 sudo systemctl start hello-world
 ```
 
-> **Note:** For production deployments, consider changing the `hostname` in `server.js` from `'127.0.0.1'` to `'0.0.0.0'` to accept connections from external hosts (Source: `server.js`, line 3).
+> **Note:** For production deployments, consider changing the `hostname` in `server.js` from `'127.0.0.1'` to `'0.0.0.0'` to accept connections from external hosts (Source: `server.js`, line 21). Ensure appropriate firewall rules or a reverse proxy (e.g., Nginx) are in place when exposing the server externally.
 
 ### Docker Considerations
 
@@ -300,7 +301,7 @@ CMD ["node", "server.js"]
 
 ## Project Structure
 
-```
+```text
 .
 ├── README.md            # Project documentation
 ├── package.json         # npm package manifest
@@ -313,7 +314,7 @@ CMD ["node", "server.js"]
 | `README.md` | Project documentation | Comprehensive setup, API, deployment, and code walkthrough documentation |
 | `package.json` | npm package manifest | Name: `hello_world`, version: `1.0.0`, license: MIT (Source: `package.json`, lines 2–10) |
 | `package-lock.json` | Dependency lock file | lockfileVersion 3, zero external packages |
-| `server.js` | HTTP server entry point | 14 lines, uses only Node.js built-in `http` module (Source: `server.js`, lines 1–14) |
+| `server.js` | HTTP server entry point | 14 lines of application code (53 lines total including JSDoc annotations), uses only Node.js built-in `http` module (Source: `server.js`, lines 1–53) |
 
 ---
 
