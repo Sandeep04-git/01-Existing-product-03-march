@@ -83,6 +83,16 @@ app.post(
 );
 
 // ---------------------------------------------------------------------------
+// Error-Handling Middleware — prevents stack traces and internal file paths
+// from leaking to clients in error responses (e.g., malformed JSON from
+// body-parser, oversized payloads). Must be defined after all routes so
+// Express recognizes the four-parameter signature as an error handler.
+// ---------------------------------------------------------------------------
+app.use((err, req, res, next) => {
+  res.status(err.status || 500).json({ error: err.message || 'Internal Server Error' });
+});
+
+// ---------------------------------------------------------------------------
 // HTTP Server Setup (backward compatible — preserves 127.0.0.1:3000 binding)
 // ---------------------------------------------------------------------------
 const server = http.createServer(app);
