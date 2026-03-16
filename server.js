@@ -83,6 +83,17 @@ app.post(
 );
 
 // ---------------------------------------------------------------------------
+// Catch-All 404 Handler — returns a generic JSON response for any request
+// that does not match a defined route. Prevents Express default HTML error
+// page (which contains a recognizable framework fingerprint such as
+// "<pre>Cannot GET /path</pre>") from being served to clients.
+// Must be placed after all route definitions and before the error handler.
+// ---------------------------------------------------------------------------
+app.use((req, res) => {
+  res.status(404).json({ error: 'Not found' });
+});
+
+// ---------------------------------------------------------------------------
 // Error-Handling Middleware — prevents stack traces and internal file paths
 // from leaking to clients in error responses (e.g., malformed JSON from
 // body-parser, oversized payloads). Must be defined after all routes so
