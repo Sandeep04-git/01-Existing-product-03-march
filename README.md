@@ -6,7 +6,7 @@ A simple Express.js HTTP server with two endpoints.
 
 | Method | Path       | Response         | Status | Content-Type |
 |--------|------------|------------------|--------|--------------|
-| GET    | `/`        | `Hello, World!\n`| 200    | text/plain   |
+| GET    | `/`        | `Hello, World!\n` | 200    | text/plain   |
 | GET    | `/evening` | `Good evening`   | 200    | text/plain   |
 
 ## Getting Started
