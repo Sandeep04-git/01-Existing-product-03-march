@@ -86,11 +86,13 @@ describe('HTTP Response Tests', () => {
 describe('HTTP Headers Tests', () => {
   test('response includes Content-Type text/plain header', async () => {
     const res = await request(server).get('/');
+    expect(res.statusCode).toBe(200);
     expect(res.headers['content-type']).toMatch(/text\/plain/);
   });
 
   test('POST response includes Content-Type text/plain header', async () => {
     const res = await request(server).post('/');
+    expect(res.statusCode).toBe(200);
     expect(res.headers['content-type']).toMatch(/text\/plain/);
   });
 });
@@ -103,9 +105,10 @@ describe('Server Startup Tests', () => {
   test('server is listening and accepting connections', async () => {
     const res = await request(server).get('/');
     expect(res.statusCode).toBe(200);
+    expect(res.text).toBe('Hello, World!\n');
   });
 
-  test('server logs startup message to console', () => {
+  test('server startup completed with correct address binding', () => {
     const spy = jest.spyOn(console, 'log').mockImplementation(() => {});
     // The server already started before tests run (auto-starts on require).
     // Verify the server is bound to the expected address as a proxy for
@@ -217,6 +220,7 @@ describe('Error Handling Tests', () => {
     const address = server.address();
     anotherServer.on('error', (err) => {
       expect(err.code).toBe('EADDRINUSE');
+      anotherServer.close();
       done();
     });
     anotherServer.listen(address.port, address.address);
