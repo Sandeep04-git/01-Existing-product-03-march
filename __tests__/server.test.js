@@ -25,11 +25,16 @@ const server = require('../server');
 // that call is asynchronous. This hook does NOT start the server — it only
 // waits for the already-initiated listen to complete so that server.address()
 // and supertest requests work reliably against the bound address.
+// Also handles the error event to fail fast instead of hanging on timeout
+// if the port is already in use or another binding error occurs.
 beforeAll((done) => {
   if (server.listening) {
     done();
   } else {
-    server.on('listening', done);
+    server.once('listening', done);
+    server.once('error', (err) => {
+      done(new Error(`Server failed to start: ${err.message}`));
+    });
   }
 });
 
